@@ -13,12 +13,12 @@ public partial class ListaProduto : ContentPage
 
 		lst_produtos.ItemsSource = lista;
     }
-
-	protected async	override void OnAppearing() 
+	List<Produto> listaOriginal = new List<Produto>();
+    protected async	override void OnAppearing() 
 	{
-		List<Produto> tmp = await App.Db.GetAll();
-		tmp .
-			ForEach(i=> lista.Add(i));
+		lista.Clear();
+		listaOriginal = await App.Db.GetAll();
+		listaOriginal.ForEach(i => lista.Add(i));
     }
 
     private void ToolbarItem_Clicked(object sender, EventArgs e)
@@ -35,13 +35,15 @@ public partial class ListaProduto : ContentPage
 
     }
 
-    private async void	txt_search_TextChanged(object sender, TextChangedEventArgs e)
+    private  void	txt_search_TextChanged(object sender, TextChangedEventArgs e)
     {
-		string q = e.NewTextValue;
-		lista.Clear();
+        string query = e.NewTextValue?.ToLower() ?? "";
+        var filtrados = listaOriginal
+                        .Where(p => p.Descricao.ToLower().Contains(query))
+                        .ToList();
 
-        List<Produto> tmp = await App.Db.Search(q);
-		tmp.ForEach(i => lista.Add(i));
+        lista.Clear();
+        filtrados.ForEach(p => lista.Add(p));
     }
 
     private void ToolbarItem_Clicked_1(object sender, EventArgs e)
