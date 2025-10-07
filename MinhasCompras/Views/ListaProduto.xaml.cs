@@ -6,7 +6,7 @@ namespace MinhasCompras.Views;
 
 public partial class ListaProduto : ContentPage
 {
-    ObservableCollection<Produto> lista = new ObservableCollection<Produto>();
+    ObservableCollection<Produto> lista = [];
     public ListaProduto()
     {
         InitializeComponent();
@@ -139,6 +139,11 @@ public partial class ListaProduto : ContentPage
             lst_produtos.IsRefreshing = false;
 
         }
+    }
+
+    private void ToolbarItem_Clicked_2(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new Views.NewPage1());
     }
 }
 

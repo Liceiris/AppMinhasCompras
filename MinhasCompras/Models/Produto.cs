@@ -57,5 +57,6 @@ namespace MinhasCompras.Models
         {
             get => Quantidade * Preco;
         }
+        public DateTime DataCadastro { get; internal set; }
     }
 }

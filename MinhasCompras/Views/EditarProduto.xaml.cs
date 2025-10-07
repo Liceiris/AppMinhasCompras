@@ -4,6 +4,7 @@ namespace MinhasCompras.Views;
 
 public partial class EditarProduto : ContentPage
 {
+  
     public EditarProduto()
     {
         InitializeComponent();
@@ -20,7 +21,8 @@ public partial class EditarProduto : ContentPage
                 Id = produto_anexado.Id,
                 Descricao = txt_descricao.Text,
                 Quantidade = Convert.ToDouble(txt_quantidade.Text),
-                Preco = Convert.ToDouble(txt_preco.Text)
+                Preco = Convert.ToDouble(txt_preco.Text),
+                DataCadastro = dtp_dataCompra.Date,
             };
 
             await App.Db.Update(p);
@@ -33,4 +35,12 @@ public partial class EditarProduto : ContentPage
             await DisplayAlert("OPS", ex.Message, "OK");
         }
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Produto produto = BindingContext as Produto;
+        if (produto != null)
+            dtp_dataCompra.Date = produto.DataCadastro;
+    }
+
 }
