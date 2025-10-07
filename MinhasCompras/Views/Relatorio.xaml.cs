@@ -5,10 +5,10 @@ namespace MinhasCompras.Views;
 
 public partial class NovoProduto : ContentPage
 {
-	public NovoProduto()
-	{
-		InitializeComponent();
-	}
+    public NovoProduto()
+    {
+        InitializeComponent();
+    }
 
     private async void ToolbarItem_Clicked_1(object sender, EventArgs e)
     {
@@ -28,10 +28,10 @@ public partial class NovoProduto : ContentPage
 
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-             await DisplayAlert("OPS", ex.Message, "OK");
+            await DisplayAlert("OPS", ex.Message, "OK");
         }
-        
+
     }
 }
