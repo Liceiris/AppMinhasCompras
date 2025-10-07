@@ -18,6 +18,7 @@ public partial class ListaProduto : ContentPage
     {
         try
         {
+            lista.Clear();
 
             List<Produto> tmp = await App.Db.GetAll();
 
@@ -25,7 +26,7 @@ public partial class ListaProduto : ContentPage
         }
         catch (Exception ex)
         {
-          await DisplayAlert("Ops", ex.Message, "OK");
+            await DisplayAlert("Ops", ex.Message, "OK");
         }
     }
 
@@ -50,6 +51,8 @@ public partial class ListaProduto : ContentPage
 
             string q = e.NewTextValue;
 
+            lst_produtos.IsRefreshing = true;
+
             lista.Clear();
 
             List<Produto> tmp = await App.Db.Search(q);
@@ -59,7 +62,11 @@ public partial class ListaProduto : ContentPage
         }
         catch (Exception ex)
         {
-          await DisplayAlert("Ops", ex.Message, "OK");
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+        finally
+        {
+            lst_produtos.IsRefreshing = false;
         }
     }
 
@@ -86,16 +93,17 @@ public partial class ListaProduto : ContentPage
                 await App.Db.Delete(p.Id);
                 lista.Remove(p);
             }
-                }
+        }
         catch (Exception ex)
         {
-           await DisplayAlert("Ops", ex.Message, "OK");
+            await DisplayAlert("Ops", ex.Message, "OK");
         }
     }
 
     private void lst_produtos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        try {
+        try
+        {
 
             Produto p = e.SelectedItem as Produto;
 
@@ -108,8 +116,29 @@ public partial class ListaProduto : ContentPage
 
         catch (Exception ex)
         {
-             DisplayAlert("Ops", ex.Message, "OK");
+            DisplayAlert("Ops", ex.Message, "OK");
+        }
+    }
+
+    private async void lst_produtos_Refreshing(object sender, EventArgs e)
+    {
+        try
+        {
+            lista.Clear();
+
+            List<Produto> tmp = await App.Db.GetAll();
+
+            tmp.ForEach(i => lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+        finally
+        {
+            lst_produtos.IsRefreshing = false;
+
         }
     }
 }
-    
+
